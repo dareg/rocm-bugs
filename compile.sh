@@ -62,26 +62,8 @@ $FC core/field_5rm_module.F90
 $FC core/field_async_module.F90
 $FC core/field_module.F90
 
-$FC factory/field_3lm_factory_module.F90
-$FC factory/field_2rm_factory_module.F90
 $FC factory/field_2im_factory_module.F90
-$FC factory/field_1im_factory_module.F90
-$FC factory/field_1rd_factory_module.F90
-$FC factory/field_5rd_factory_module.F90
-$FC factory/field_5lm_factory_module.F90
-$FC factory/field_4rd_factory_module.F90
-$FC factory/field_2lm_factory_module.F90
-$FC factory/field_1lm_factory_module.F90
-$FC factory/field_5im_factory_module.F90
-$FC factory/field_4im_factory_module.F90
-$FC factory/field_2rd_factory_module.F90
-$FC factory/field_3rd_factory_module.F90
-$FC factory/field_3rm_factory_module.F90
 $FC factory/field_3im_factory_module.F90
-$FC factory/field_5rm_factory_module.F90
-$FC factory/field_1rm_factory_module.F90
-$FC factory/field_4lm_factory_module.F90
-$FC factory/field_4rm_factory_module.F90
 $FC factory/field_factory_module.F90
 
 $FC shuffle/field_shuffle_type_module.F90
