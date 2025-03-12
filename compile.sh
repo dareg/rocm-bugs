@@ -162,24 +162,5 @@ $FC factory/field_4rm_factory_module.F90
 $FC factory/field_factory_module.F90
 
 
-$FC shuffle/field_1im_shuffle_module.F90
-$FC shuffle/field_1lm_shuffle_module.F90
-$FC shuffle/field_1rd_shuffle_module.F90
-$FC shuffle/field_1rm_shuffle_module.F90
 $FC shuffle/field_2im_shuffle_module.F90
-$FC shuffle/field_2lm_shuffle_module.F90
-$FC shuffle/field_2rd_shuffle_module.F90
-$FC shuffle/field_2rm_shuffle_module.F90
-$FC shuffle/field_3im_shuffle_module.F90
-$FC shuffle/field_3lm_shuffle_module.F90
-$FC shuffle/field_3rd_shuffle_module.F90
-$FC shuffle/field_3rm_shuffle_module.F90
-$FC shuffle/field_4im_shuffle_module.F90
-$FC shuffle/field_4lm_shuffle_module.F90
-$FC shuffle/field_4rd_shuffle_module.F90
-$FC shuffle/field_4rm_shuffle_module.F90
-$FC shuffle/field_5im_shuffle_module.F90
-$FC shuffle/field_5lm_shuffle_module.F90
-$FC shuffle/field_5rd_shuffle_module.F90
-$FC shuffle/field_5rm_shuffle_module.F90
 $FC shuffle/field_shuffle_type_module.F90
