@@ -84,5 +84,4 @@ $FC util/field_2im_access_module.F90
 $FC util/field_3im_access_module.F90
 $FC util/field_access_module.F90
 
-$FC shuffle/field_2im_shuffle_module.F90
 $FC shuffle/field_shuffle_type_module.F90
