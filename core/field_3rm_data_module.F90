@@ -1,0 +1,344 @@
+
+MODULE FIELD_3RM_DATA_MODULE
+
+
+USE FIELD_CONSTANTS_MODULE
+USE PARKIND1, ONLY : JPRM, JPRD, JPIM, JPLM
+
+IMPLICIT NONE
+
+PRIVATE
+
+
+PUBLIC :: FIELD_3RM_COPY
+PUBLIC :: FIELD_3RM_COPY_FUNC
+PUBLIC :: FIELD_3RM_COPY_INTF
+
+ABSTRACT INTERFACE
+  SUBROUTINE FIELD_3RM_COPY_INTF (HST, DEV, MAP_DEVPTR, KDIR, QUEUE)
+    IMPORT :: JPIM, JPRM
+    REAL(KIND=JPRM), POINTER :: HST (:,:,:), DEV (:,:,:)
+    LOGICAL,                       INTENT (IN) :: MAP_DEVPTR
+    INTEGER (KIND=JPIM),           INTENT (IN) :: KDIR
+    INTEGER (KIND=JPIM), OPTIONAL, INTENT (IN) :: QUEUE
+  END SUBROUTINE
+END INTERFACE
+
+CONTAINS
+
+
+  FUNCTION FIELD_3RM_COPY_FUNC (HST, DEV) RESULT (FUNC)
+
+    USE FIELD_ABORT_MODULE
+
+    PROCEDURE (FIELD_3RM_COPY_INTF), POINTER :: FUNC 
+
+    REAL(KIND=JPRM), POINTER, OPTIONAL :: HST (:,:,:), DEV (:,:,:)
+
+    INTEGER :: LAST_CONTIG_DIM
+    INTEGER :: NEXT_CONTIG_DIM
+
+    IF (PRESENT (HST)) THEN
+      LAST_CONTIG_DIM = FIELD_3RM_GET_LAST_CONTIGUOUS_DIMENSION (HST, 0)
+      NEXT_CONTIG_DIM = FIELD_3RM_GET_LAST_CONTIGUOUS_DIMENSION (HST, LAST_CONTIG_DIM+1)
+    ELSE
+      LAST_CONTIG_DIM = 3
+      NEXT_CONTIG_DIM = 3
+    ENDIF
+
+    SELECT CASE (LAST_CONTIG_DIM)
+      CASE (0)
+        FUNC => FIELD_3RM_COPY_DIM0_CONTIGUOUS 
+      CASE (1)
+        FUNC => FIELD_3RM_COPY_DIM1_CONTIGUOUS 
+      CASE (2)
+        FUNC => FIELD_3RM_COPY_DIM2_CONTIGUOUS 
+      CASE (3)
+        FUNC => FIELD_3RM_COPY_DIM3_CONTIGUOUS 
+      CASE DEFAULT
+        CALL FIELD_ABORT ('INTERNAL ERROR: UNEXPECTED LAST_CONTIG_DIM')
+    END SELECT
+
+  END FUNCTION
+
+  SUBROUTINE FIELD_3RM_COPY (HST, DEV, MAP_DEVPTR, KDIR, QUEUE)
+
+    USE FIELD_ABORT_MODULE
+
+    REAL(KIND=JPRM), POINTER :: HST (:,:,:), DEV (:,:,:)
+    LOGICAL,                       INTENT (IN) :: MAP_DEVPTR
+    INTEGER (KIND=JPIM),           INTENT (IN) :: KDIR
+    INTEGER (KIND=JPIM), OPTIONAL, INTENT (IN) :: QUEUE
+
+    PROCEDURE (FIELD_3RM_COPY_INTF), POINTER :: FUNC 
+
+    FUNC => FIELD_3RM_COPY_FUNC (HST, DEV) 
+
+    CALL FUNC (HST, DEV, MAP_DEVPTR, KDIR, QUEUE)
+
+  END SUBROUTINE
+
+  SUBROUTINE FIELD_3RM_COPY_DIM0_CONTIGUOUS (HST, DEV, MAP_DEVPTR, KDIR, QUEUE)
+  
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY : INT64
+    REAL(KIND=JPRM), POINTER :: HST (:,:,:), DEV (:,:,:)
+    LOGICAL,                       INTENT (IN) :: MAP_DEVPTR
+    INTEGER (KIND=JPIM),           INTENT (IN) :: KDIR
+    INTEGER (KIND=JPIM), OPTIONAL, INTENT (IN) :: QUEUE
+    INTEGER (KIND=INT64)                       :: ISIZE
+    INTEGER :: J, J1, J2, J3
+    
+
+    DO J3 = LBOUND (HST, 3), UBOUND (HST, 3)
+      DO J2 = LBOUND (HST, 2), UBOUND (HST, 2)
+        DO J1 = LBOUND (HST, 1), UBOUND (HST, 1)
+#ifdef WITH_GPU_OFFLOAD
+          IF(MAP_DEVPTR)THEN
+  
+            DEVPTR = 
+  
+          ELSE
+  
+            DEVPTR = 
+  
+          ENDIF
+#endif
+          ISIZE = KIND (HST)
+          IF (KDIR == NH2D) THEN
+#ifdef WITH_GPU_OFFLOAD
+            IF(PRESENT(QUEUE))THEN
+            
+            ELSE
+            
+            ENDIF
+#else
+            DEV (J1 + LBOUND(DEV,1) - LBOUND (HST,1), J2 + LBOUND(DEV,2) - LBOUND (HST,2), J3 + LBOUND(DEV,3) - LBOUND (HST,3)) =&
+                & HST (J1, J2, J3)
+#endif
+          ELSEIF (KDIR == ND2H) THEN
+#ifdef WITH_GPU_OFFLOAD
+            IF(PRESENT(QUEUE))THEN
+            
+            ELSE
+            
+            ENDIF
+#else
+            HST (J1, J2, J3) = DEV (J1 + LBOUND(DEV,1) - LBOUND (HST,1), J2 + LBOUND(DEV,2) - LBOUND (HST,2), J3 + LBOUND(DEV,3) -&
+                & LBOUND (HST,3))
+#endif
+          ENDIF
+        ENDDO
+      ENDDO
+    ENDDO
+    END SUBROUTINE
+
+  SUBROUTINE FIELD_3RM_COPY_DIM1_CONTIGUOUS (HST, DEV, MAP_DEVPTR, KDIR, QUEUE)
+  
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY : INT64
+    REAL(KIND=JPRM), POINTER :: HST (:,:,:), DEV (:,:,:)
+    LOGICAL,                       INTENT (IN) :: MAP_DEVPTR
+    INTEGER (KIND=JPIM),           INTENT (IN) :: KDIR
+    INTEGER (KIND=JPIM), OPTIONAL, INTENT (IN) :: QUEUE
+    INTEGER (KIND=INT64)                       :: ISIZE
+    INTEGER :: J, J2, J3
+    
+
+    DO J3 = LBOUND (HST, 3), UBOUND (HST, 3)
+      DO J2 = LBOUND (HST, 2), UBOUND (HST, 2)
+#ifdef WITH_GPU_OFFLOAD
+        IF(MAP_DEVPTR)THEN
+ 
+          DEVPTR = 
+ 
+        ELSE
+ 
+          DEVPTR = 
+ 
+        ENDIF
+#endif
+        ISIZE = SIZEOF ( HST(:, J2, J3) )
+        IF (KDIR == NH2D) THEN
+#ifdef WITH_GPU_OFFLOAD
+          IF(PRESENT(QUEUE))THEN
+           
+          ELSE
+           
+          ENDIF
+#else
+          DEV (:, J2 + LBOUND(DEV,2) - LBOUND (HST,2), J3 + LBOUND(DEV,3) - LBOUND (HST,3)) = HST (:, J2, J3)
+#endif
+        ELSEIF (KDIR == ND2H) THEN
+#ifdef WITH_GPU_OFFLOAD
+          IF(PRESENT(QUEUE))THEN
+           
+          ELSE
+           
+          ENDIF
+#else
+          HST (:, J2, J3) = DEV (:, J2 + LBOUND(DEV,2) - LBOUND (HST,2), J3 + LBOUND(DEV,3) - LBOUND (HST,3))
+#endif
+        ENDIF
+      ENDDO
+    ENDDO
+    END SUBROUTINE
+
+  SUBROUTINE FIELD_3RM_COPY_DIM2_CONTIGUOUS (HST, DEV, MAP_DEVPTR, KDIR, QUEUE)
+  
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY : INT64
+    REAL(KIND=JPRM), POINTER :: HST (:,:,:), DEV (:,:,:)
+    LOGICAL,                       INTENT (IN) :: MAP_DEVPTR
+    INTEGER (KIND=JPIM),           INTENT (IN) :: KDIR
+    INTEGER (KIND=JPIM), OPTIONAL, INTENT (IN) :: QUEUE
+    INTEGER (KIND=INT64)                       :: ISIZE
+    INTEGER :: J, J3
+    
+
+    DO J3 = LBOUND (HST, 3), UBOUND (HST, 3)
+#ifdef WITH_GPU_OFFLOAD
+      IF(MAP_DEVPTR)THEN
+
+        DEVPTR = 
+
+      ELSE
+
+        DEVPTR = 
+
+      ENDIF
+#endif
+      ISIZE = SIZEOF ( HST(:, :, J3) )
+      IF (KDIR == NH2D) THEN
+#ifdef WITH_GPU_OFFLOAD
+        IF(PRESENT(QUEUE))THEN
+          
+        ELSE
+          
+        ENDIF
+#else
+        DEV (:, :, J3 + LBOUND(DEV,3) - LBOUND (HST,3)) = HST (:, :, J3)
+#endif
+      ELSEIF (KDIR == ND2H) THEN
+#ifdef WITH_GPU_OFFLOAD
+        IF(PRESENT(QUEUE))THEN
+          
+        ELSE
+          
+        ENDIF
+#else
+        HST (:, :, J3) = DEV (:, :, J3 + LBOUND(DEV,3) - LBOUND (HST,3))
+#endif
+      ENDIF
+    ENDDO
+    END SUBROUTINE
+
+  SUBROUTINE FIELD_3RM_COPY_DIM3_CONTIGUOUS (HST, DEV, MAP_DEVPTR, KDIR, QUEUE)
+  
+  USE, INTRINSIC :: ISO_FORTRAN_ENV, ONLY : INT64
+    REAL(KIND=JPRM), POINTER :: HST (:,:,:), DEV (:,:,:)
+    LOGICAL,                       INTENT (IN) :: MAP_DEVPTR
+    INTEGER (KIND=JPIM),           INTENT (IN) :: KDIR
+    INTEGER (KIND=JPIM), OPTIONAL, INTENT (IN) :: QUEUE
+    INTEGER (KIND=INT64)                       :: ISIZE
+    INTEGER :: J
+    
+
+#ifdef WITH_GPU_OFFLOAD
+        IF(MAP_DEVPTR)THEN
+ 
+          DEVPTR = 
+ 
+        ELSE
+ 
+          DEVPTR = 
+ 
+        ENDIF
+#endif
+        ISIZE = SIZEOF ( HST(:, :, :) )
+        IF (KDIR == NH2D) THEN
+#ifdef WITH_GPU_OFFLOAD
+          IF(PRESENT(QUEUE))THEN
+           
+          ELSE
+           
+          ENDIF
+#else
+          DEV (:, :, :) = HST (:, :, :)
+#endif
+        ELSEIF (KDIR == ND2H) THEN
+#ifdef WITH_GPU_OFFLOAD
+          IF(PRESENT(QUEUE))THEN
+           
+          ELSE
+           
+          ENDIF
+#else
+          HST (:, :, :) = DEV (:, :, :)
+#endif
+        ENDIF
+    END SUBROUTINE
+
+
+
+
+
+  INTEGER (KIND=JPIM) FUNCTION FIELD_3RM_GET_LAST_CONTIGUOUS_DIMENSION (PTR, AFTER) RESULT (JDIM)
+  REAL(KIND=JPRM), POINTER :: PTR (:,:,:)
+  INTEGER (KIND=JPIM) :: AFTER
+  INTEGER*8 :: IPREVIOUS_STRIDE, ITHIS_STRIDE, ISIZE
+  INTEGER (KIND=JPIM) :: J, LB(3)
+
+  ! assume that dimension all dimensions before AFTER are contiguous...
+  LB = LBOUND(PTR)
+  IF (AFTER == 0) THEN
+    IPREVIOUS_STRIDE = KIND (PTR)
+  ENDIF
+
+  IF (AFTER < 1) THEN
+    ISIZE = 1
+    IF (SIZE(PTR, 1) /= 1) THEN
+      ITHIS_STRIDE = LOC (PTR (LB(1)+1, LB(2), LB(3))) - LOC (PTR (LB(1), LB(2), LB(3)))
+      IF (IPREVIOUS_STRIDE * ISIZE /= ITHIS_STRIDE) THEN
+        JDIM = 0
+        RETURN
+      ENDIF
+    ENDIF
+    IPREVIOUS_STRIDE = IPREVIOUS_STRIDE * ISIZE
+  ELSE IF (AFTER == 1) THEN
+    ITHIS_STRIDE = LOC (PTR (LB(1)+1, LB(2), LB(3))) - LOC (PTR (LB(1), LB(2), LB(3)))
+    IPREVIOUS_STRIDE = ITHIS_STRIDE
+  ENDIF
+
+  IF (AFTER < 2) THEN
+    ISIZE = SIZE(PTR, 1)
+    IF (SIZE(PTR, 2) /= 1) THEN
+      ITHIS_STRIDE = LOC (PTR (LB(1), LB(2)+1, LB(3))) - LOC (PTR (LB(1), LB(2), LB(3)))
+      IF (IPREVIOUS_STRIDE * ISIZE /= ITHIS_STRIDE) THEN
+        JDIM = 1
+        RETURN
+      ENDIF
+    ENDIF
+    IPREVIOUS_STRIDE = IPREVIOUS_STRIDE * ISIZE
+  ELSE IF (AFTER == 2) THEN
+    ITHIS_STRIDE = LOC (PTR (LB(1), LB(2)+1, LB(3))) - LOC (PTR (LB(1), LB(2), LB(3)))
+    IPREVIOUS_STRIDE = ITHIS_STRIDE
+  ENDIF
+
+  IF (AFTER < 3) THEN
+    ISIZE = SIZE(PTR, 2)
+    IF (SIZE(PTR, 3) /= 1) THEN
+      ITHIS_STRIDE = LOC (PTR (LB(1), LB(2), LB(3)+1)) - LOC (PTR (LB(1), LB(2), LB(3)))
+      IF (IPREVIOUS_STRIDE * ISIZE /= ITHIS_STRIDE) THEN
+        JDIM = 2
+        RETURN
+      ENDIF
+    ENDIF
+    IPREVIOUS_STRIDE = IPREVIOUS_STRIDE * ISIZE
+  ELSE IF (AFTER == 3) THEN
+    ITHIS_STRIDE = LOC (PTR (LB(1), LB(2), LB(3)+1)) - LOC (PTR (LB(1), LB(2), LB(3)))
+    IPREVIOUS_STRIDE = ITHIS_STRIDE
+  ENDIF
+
+  JDIM = 3
+  END FUNCTION FIELD_3RM_GET_LAST_CONTIGUOUS_DIMENSION
+
+
+END MODULE FIELD_3RM_DATA_MODULE
