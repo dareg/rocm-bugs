@@ -80,26 +80,8 @@ $FC factory/field_4lm_factory_module.F90
 $FC factory/field_4rm_factory_module.F90
 $FC factory/field_factory_module.F90
 
-$FC util/field_1im_access_module.F90
-$FC util/field_1lm_access_module.F90
-$FC util/field_1rd_access_module.F90
-$FC util/field_1rm_access_module.F90
 $FC util/field_2im_access_module.F90
-$FC util/field_2lm_access_module.F90
-$FC util/field_2rd_access_module.F90
-$FC util/field_2rm_access_module.F90
 $FC util/field_3im_access_module.F90
-$FC util/field_3lm_access_module.F90
-$FC util/field_3rd_access_module.F90
-$FC util/field_3rm_access_module.F90
-$FC util/field_4im_access_module.F90
-$FC util/field_4lm_access_module.F90
-$FC util/field_4rd_access_module.F90
-$FC util/field_4rm_access_module.F90
-$FC util/field_5im_access_module.F90
-$FC util/field_5lm_access_module.F90
-$FC util/field_5rd_access_module.F90
-$FC util/field_5rm_access_module.F90
 $FC util/field_access_module.F90
 
 $FC shuffle/field_2im_shuffle_module.F90
