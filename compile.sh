@@ -58,7 +58,6 @@ $FC core/field_5rd_data_module.F90
 $FC core/field_5rd_module.F90
 $FC core/field_5rm_data_module.F90
 $FC core/field_5rm_module.F90
-$FC core/field_async_module.F90
 $FC core/field_module.F90
 
 $FC factory/field_2im_factory_module.F90
