@@ -18,14 +18,6 @@ $FC core/host_alloc_module.F90
 $FC core/dev_alloc_module.F90
 $FC core/field_basic_module.F90
 
-$FC core/field_1im_data_module.F90
-$FC core/field_1im_module.F90
-$FC core/field_1lm_data_module.F90
-$FC core/field_1lm_module.F90
-$FC core/field_1rd_data_module.F90
-$FC core/field_1rd_module.F90
-$FC core/field_1rm_data_module.F90
-$FC core/field_1rm_module.F90
 $FC core/field_2im_data_module.F90
 $FC core/field_2im_module.F90
 $FC core/field_2lm_data_module.F90
