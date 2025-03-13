@@ -20,20 +20,8 @@ $FC core/field_basic_module.F90
 
 $FC core/field_2im_data_module.F90
 $FC core/field_2im_module.F90
-$FC core/field_2lm_data_module.F90
-$FC core/field_2lm_module.F90
-$FC core/field_2rd_data_module.F90
-$FC core/field_2rd_module.F90
-$FC core/field_2rm_data_module.F90
-$FC core/field_2rm_module.F90
 $FC core/field_3im_data_module.F90
 $FC core/field_3im_module.F90
-$FC core/field_3lm_data_module.F90
-$FC core/field_3lm_module.F90
-$FC core/field_3rd_data_module.F90
-$FC core/field_3rd_module.F90
-$FC core/field_3rm_data_module.F90
-$FC core/field_3rm_module.F90
 
 $FC factory/field_2im_factory_module.F90
 $FC factory/field_3im_factory_module.F90
