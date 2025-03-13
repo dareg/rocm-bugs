@@ -5,8 +5,7 @@ set -xeu
 module load rocm
 
 #cleaning
-find -name "*.o" -delete
-find -name "*.mod" -delete
+./clean.sh
 
 FC_FLAGS="-DWITH_FIAT  -I/home/grassetj/install/include -I/home/grassetj/install/include/fiat -I/home/grassetj/install/module/fiat -I/home/grassetj/install/module/parkind_dp -O2 -g -fPIC -fopenmp -c"
 FC="amdflang $FC_FLAGS"
